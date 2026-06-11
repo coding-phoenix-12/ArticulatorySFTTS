@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articulatory Source-Filter TTS &mdash; Audio Samples</title>
+<style>
+  :root{
+    --ink:#1a1d21;
+    --ink-soft:#4a5159;
+    --line:#d9dde2;
+    --line-soft:#eceef1;
+    --paper:#fbfbf9;
+    --panel:#ffffff;
+    --accent:#7a1f2b;      /* deep oxblood — spectral energy */
+    --accent-2:#1d5b7a;    /* slate blue — articulatory trace */
+    --rhotic:#b5384a;
+    --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);line-height:1.55;font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent-2);}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- header ---------- */
+  header.masthead{
+    border-bottom:2px solid var(--ink);
+    padding:48px 0 28px;
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin:0 0 14px;
+  }
+  h1{
+    font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.15;
+    margin:0 0 12px;letter-spacing:-.01em;
+  }
+  .subtitle{font-size:17px;color:var(--ink-soft);max-width:70ch;margin:0 0 18px;}
+  .authors{font-size:14px;color:var(--ink-soft);margin:0;}
+  .authors .sep{color:var(--line);padding:0 6px;}
+  .paperlinks{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;}
+  .paperlinks a{
+    font-family:var(--mono);font-size:12.5px;text-decoration:none;color:var(--ink);
+    border:1px solid var(--line);border-radius:2px;padding:6px 12px;background:var(--panel);
+  }
+  .paperlinks a:hover{border-color:var(--ink);}
+
+  /* ---------- sticky nav ---------- */
+  nav.toc{
+    position:sticky;top:0;z-index:20;background:rgba(251,251,249,.94);
+    backdrop-filter:saturate(150%) blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.toc .wrap{display:flex;gap:4px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;}
+  nav.toc a{
+    font-family:var(--mono);font-size:12px;letter-spacing:.02em;text-decoration:none;
+    color:var(--ink-soft);padding:6px 10px;border-radius:2px;
+  }
+  nav.toc a:hover{color:var(--ink);background:var(--line-soft);}
+
+  /* ---------- sections ---------- */
+  section{padding:46px 0;border-bottom:1px solid var(--line-soft);}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
+  .sec-num{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.1em;}
+  h2{font-family:var(--serif);font-weight:600;font-size:24px;margin:0;letter-spacing:-.01em;}
+  .sec-desc{color:var(--ink-soft);font-size:15px;max-width:74ch;margin:10px 0 26px;}
+
+  /* ---------- baseline comparison table ---------- */
+  .testset-tabs{display:flex;gap:8px;margin-bottom:18px;}
+  .testset-tabs button{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink-soft);
+    padding:7px 16px;border-radius:2px;cursor:pointer;
+  }
+  .testset-tabs button.active{border-color:var(--ink);color:var(--ink);background:#fff;font-weight:600;}
+
+  .cmp-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:3px;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:780px;font-size:13px;background:var(--panel);}
+  table.cmp th,table.cmp td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line-soft);}
+  table.cmp thead th{
+    position:sticky;top:0;background:#f3f1ec;font-family:var(--mono);
+    font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);
+    border-bottom:1px solid var(--line);white-space:nowrap;
+  }
+  table.cmp th.utt{position:sticky;left:0;z-index:2;background:#f3f1ec;}
+  table.cmp td.utt{
+    position:sticky;left:0;background:var(--panel);font-family:var(--mono);
+    font-size:12px;color:var(--ink-soft);white-space:normal;
+    vertical-align:top;min-width:160px;max-width:230px;
+  }
+  table.cmp tbody tr:hover td{background:#fcfaf6;}
+  table.cmp tbody tr:hover td.utt{background:#f6f3ee;}
+  .cmp.proposed-col{background:#fdf6f3;}
+  audio{height:34px;width:170px;}
+  audio.sm{width:150px;}
+
+  /* ---------- generic sample grid ---------- */
+  .grid{display:grid;gap:18px;}
+  .card{
+    border:1px solid var(--line);border-radius:3px;background:var(--panel);
+    padding:16px 18px;
+  }
+  .card h4{
+    font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-soft);margin:0 0 12px;font-weight:600;
+  }
+  .utt-label{font-family:var(--mono);font-size:12px;color:var(--accent);margin-bottom:10px;}
+  .utt-text{
+    font-family:var(--serif);font-size:14px;color:var(--ink);line-height:1.4;
+    font-style:italic;margin:2px 0 12px;max-width:60ch;
+    white-space:normal;font-weight:400;
+  }
+  table.cmp td.utt .utt-text{
+    font-family:var(--serif);font-size:12.5px;font-style:italic;color:var(--ink);
+    margin-top:5px;white-space:normal;max-width:30ch;font-weight:400;letter-spacing:0;
+    text-transform:none;
+  }
+
+  /* component 2x2 */
+  .components{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .comp{border:1px solid var(--line-soft);border-radius:3px;padding:12px;background:#fff;}
+  .comp .tag{
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+    display:inline-block;padding:2px 7px;border-radius:2px;margin-bottom:9px;
+    border:1px solid var(--line);color:var(--ink-soft);
+  }
+  .comp.final .tag{border-color:var(--accent);color:var(--accent);}
+  .spec{width:100%;border:1px solid var(--line-soft);border-radius:2px;display:block;margin-bottom:9px;background:#fafafa;}
+  .spec.placeholder{
+    aspect-ratio:5/2;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:11px;color:#b7bcc2;
+  }
+
+  /* A-B routing */
+  .ab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+  .routing{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:4px 0 12px;}
+  .routing b{color:var(--ink);}
+  .routing .src{color:var(--accent);}
+  .routing .flt{color:var(--accent-2);}
+
+  /* figure audios */
+  .fig-block{margin-bottom:34px;}
+  .fig-block:last-child{margin-bottom:0;}
+  .fig-block img.figref{
+    width:100%;max-width:620px;border:1px solid var(--line);border-radius:3px;
+    display:block;margin:0 0 16px;background:#fff;
+  }
+  .fig-caption{font-size:13.5px;color:var(--ink-soft);max-width:74ch;margin:0 0 16px;}
+  .pairrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+
+  footer{padding:40px 0 60px;color:var(--ink-soft);font-size:13px;}
+  .note{font-family:var(--mono);font-size:11.5px;color:#9aa0a7;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-top:10px;}
+  .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;}
+  .legend .l-src::before{background:var(--accent);}
+  .legend .l-flt::before{background:var(--accent-2);}
+
+  @media (max-width:640px){
+    h1{font-size:27px;}
+    .components{grid-template-columns:1fr;}
+    audio{width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Audio Samples &middot; IEEE/ACM TASLP Submission</p>
+    <h1>Articulatory Source-Filter TTS:<br>Physically Grounded Control through Vocal Tract Kinematics</h1>
+    <p class="subtitle">Supplementary listening page. Synthesised speech is decomposed into an articulation-conditioned filter and a flow-matched glottal source, enabling explicit, physically grounded control over the vocal tract response.</p>
+    <p class="authors">Jesuraj Bandekar<span class="sep">/</span>Shinji Watanabe<span class="sep">/</span>Prasanta Kumar Ghosh</p>
+    <div class="paperlinks">
+      <a href="#">Paper (PDF)</a>
+      <a href="#sec-baselines">Baseline comparison</a>
+      <a href="#sec-components">Source / filter breakdown</a>
+      <a href="#sec-crossspeaker">Cross-speaker control</a>
+      <a href="#sec-figures">Articulatory edits</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#sec-baselines">1 &nbsp;Baselines</a>
+    <a href="#sec-components">2 &nbsp;Source/Filter</a>
+    <a href="#sec-crossspeaker">3 &nbsp;Cross-Speaker</a>
+    <a href="#sec-figures">4 &nbsp;Articulatory Edits</a>
+  </div>
+</nav>
+
+<!-- =================================================================== -->
+<!-- SECTION 1 — BASELINE COMPARISON                                     -->
+<!-- =================================================================== -->
+<section id="sec-baselines">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Baseline Comparison</h2></div>
+    <p class="sec-desc">Ten utterances per test set, synthesised by each system under evaluation. Use the toggle to switch between LibriTTS <span class="note">test-clean</span> and <span class="note">test-other</span>. The proposed model column is shaded.</p>
+
+    <div class="testset-tabs">
+      <button class="active" data-set="clean">test-clean</button>
+      <button data-set="other">test-other</button>
+    </div>
+
+    <div class="cmp-scroll">
+      <table class="cmp" id="cmp-table">
+        <thead>
+          <tr>
+            <th class="utt">Utterance</th>
+            <th>Matcha-TTS</th>
+            <th>StyleTTS2</th>
+            <th>YourTTS</th>
+            <th>XTTS</th>
+            <th>HierSpeech++</th>
+            <th>Source-Filter</th>
+            <th class="proposed-col">Proposed</th>
+          </tr>
+        </thead>
+        <tbody id="cmp-body"><!-- rows injected by JS --></tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:10px;">Place files at <code>audio/baselines/{set}/{system}_{NN}.wav</code> &mdash; e.g. <code>audio/baselines/clean/proposed_01.wav</code></p>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SECTION 2 — SOURCE / FILTER COMPONENT BREAKDOWN                     -->
+<!-- =================================================================== -->
+<section id="sec-components">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Source &amp; Filter Decomposition</h2></div>
+    <p class="sec-desc">Ten utterances from the proposed model, each shown as four signals with spectrograms: the source excitation before and after OT-CFM refinement, the articulation-conditioned filter, and the final combined output.</p>
+    <div class="legend">
+      <span class="l-src">source stream</span>
+      <span class="l-flt">filter stream</span>
+    </div>
+    <div class="grid" id="components-grid" style="margin-top:22px;"><!-- cards injected by JS --></div>
+    <p class="note" style="margin-top:14px;">Audio: <code>audio/components/{type}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/{type}_{NN}.png</code><br>where <code>{type}</code> &isin; <code>src_pre</code>, <code>src_post</code>, <code>filter</code>, <code>combined</code></p>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SECTION 3 — CROSS-SPEAKER (A-B)                                     -->
+<!-- =================================================================== -->
+<section id="sec-crossspeaker">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Cross-Speaker Source / Filter Recombination</h2></div>
+    <p class="sec-desc">The <span style="color:var(--accent);font-weight:600;">source</span> (pitch, energy, temporal) is routed from Speaker&nbsp;A while the <span style="color:var(--accent-2);font-weight:600;">filter</span> (vocal-tract kinematics) is routed from Speaker&nbsp;B. Self-reconstructions (A&ndash;A, B&ndash;B) are included as references.</p>
+    <div class="ab-grid" id="ab-grid" style="margin-top:8px;"><!-- cards injected by JS --></div>
+    <p class="note" style="margin-top:14px;">Audio: <code>audio/crossspeaker/{combo}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/cs_{combo}_{NN}.png</code><br>where <code>{combo}</code> &isin; <code>AA</code>, <code>BB</code>, <code>AB</code></p>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- SECTION 4 — ARTICULATORY / ACCENT EDITS (figure audios)            -->
+<!-- =================================================================== -->
+<section id="sec-figures">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Articulatory &amp; Accent Control</h2></div>
+    <p class="sec-desc">Audio corresponding to the kinematic analyses in the paper: the minimal pair &ldquo;pat&rdquo;/&ldquo;cat&rdquo; (Fig.&nbsp;2), the American rhotic in &ldquo;cart&rdquo; (Fig.&nbsp;3), and the rhotic&rarr;non-rhotic edit of &ldquo;bird&rdquo; (Fig.&nbsp;4).</p>
+
+    <!-- pat / cat -->
+    <div class="fig-block">
+      <h4 style="font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;">Minimal pair &mdash; &ldquo;pat&rdquo; vs &ldquo;cat&rdquo; &middot; Fig. 2</h4>
+      <img class="figref" src="figures/fig2_patcat.png" alt="Kinematic trajectories for pat and cat">
+      <p class="fig-caption">Lower-lip activity for the bilabial /p/ versus tongue-dorsum elevation for the velar /k/, with a shared /-&aelig;t/ rhyme.</p>
+      <div class="pairrow">
+        <div class="card"><div class="utt-label">&ldquo;pat&rdquo;</div><audio controls src="audio/figures/pat.wav"></audio></div>
+        <div class="card"><div class="utt-label">&ldquo;cat&rdquo;</div><audio controls src="audio/figures/cat.wav"></audio></div>
+      </div>
+    </div>
+
+    <!-- cart -->
+    <div class="fig-block">
+      <h4 style="font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;">American rhotic &mdash; &ldquo;cart&rdquo; &middot; Fig. 3</h4>
+      <img class="figref" src="figures/fig3_cart.png" alt="Acoustic and kinematic trajectories for cart">
+      <p class="fig-caption">F3 lowering toward F2 with the simultaneous retroflex tongue-tip elevation and retraction characteristic of the post-vocalic /r/.</p>
+      <div class="pairrow">
+        <div class="card"><div class="utt-label">&ldquo;cart&rdquo; &mdash; synthesised</div><audio controls src="audio/figures/cart.wav"></audio></div>
+      </div>
+    </div>
+
+    <!-- bird -->
+    <div class="fig-block">
+      <h4 style="font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;">Accent edit &mdash; &ldquo;bird&rdquo; rhotic &rarr; non-rhotic &middot; Fig. 4</h4>
+      <img class="figref" src="figures/fig4_bird.png" alt="Kinematic and acoustic effect of flattening the rhotic gesture in bird">
+      <p class="fig-caption">Flattening the tongue-tip and tongue-body elevation suppresses the F3 drop, converting the rhotic American realisation into a non-rhotic one &mdash; with no acoustic post-processing.</p>
+      <div class="pairrow">
+        <div class="card"><div class="utt-label">Original &mdash; rhotic</div><audio controls src="audio/figures/bird_rhotic.wav"></audio></div>
+        <div class="card"><div class="utt-label">Modified &mdash; non-rhotic</div><audio controls src="audio/figures/bird_nonrhotic.wav"></audio></div>
+      </div>
+    </div>
+
+    <p class="note">Audio: <code>audio/figures/{name}.wav</code> &nbsp;&middot;&nbsp; Figures: <code>figures/{figN}.png</code></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Supplementary material for the IEEE/ACM TASLP submission. All audio is model-generated.</p>
+    <p class="note">Double-blind note: remove author names and identifying links before submission.</p>
+  </div>
+</footer>
+
+<script>
+/* ----------  CONFIG: edit counts/labels here  ---------- */
+const N_BASELINE = 10;   // utterances per test set
+const N_COMPONENT = 10;  // utterances in source/filter section
+const N_CROSS = 10;      // utterances in cross-speaker section
+
+/* ----------  TRANSCRIPTS: fill in the sentence text for each utterance  ----------
+   Index 0 = utterance 01, index 1 = utterance 02, etc.
+   Leave a string empty ("") to hide the transcript for that row.            */
+const TRANSCRIPTS = {
+  clean: [
+    "The morning light fell across the quiet harbour.",  // clean_01
+    "She folded the letter and placed it on the table.",  // clean_02
+    "",  // clean_03
+    "",  // clean_04
+    "",  // clean_05
+    "",  // clean_06
+    "",  // clean_07
+    "",  // clean_08
+    "",  // clean_09
+    "",  // clean_10
+  ],
+  other: [
+    "",  // other_01
+    "",  // other_02
+    "",  // other_03
+    "",  // other_04
+    "",  // other_05
+    "",  // other_06
+    "",  // other_07
+    "",  // other_08
+    "",  // other_09
+    "",  // other_10
+  ],
+  components: [
+    "", "", "", "", "", "", "", "", "", ""   // utterance 01..10
+  ],
+  crossspeaker: [
+    "", "", "", "", "", "", "", "", "", ""   // utterance 01..10
+  ],
+};
+
+const SYSTEMS = [
+  {key:"matcha",      label:"Matcha-TTS"},
+  {key:"styletts2",   label:"StyleTTS2"},
+  {key:"yourtts",     label:"YourTTS"},
+  {key:"xtts",        label:"XTTS"},
+  {key:"hierspeech",  label:"HierSpeech++"},
+  {key:"sourcefilter",label:"Source-Filter"},
+  {key:"proposed",    label:"Proposed", highlight:true},
+];
+
+const pad = n => String(n).padStart(2,"0");
+
+/* ----------  SECTION 1: baseline table  ---------- */
+function buildBaselineTable(set){
+  const body = document.getElementById("cmp-body");
+  body.innerHTML = "";
+  const transcripts = TRANSCRIPTS[set] || [];
+  for(let i=1;i<=N_BASELINE;i++){
+    const tr = document.createElement("tr");
+    const idx = pad(i);
+    const txt = transcripts[i-1] || "";
+    const label = txt
+      ? `${set}_${idx}<div class="utt-text">${txt}</div>`
+      : `${set}_${idx}`;
+    let cells = `<td class="utt">${label}</td>`;
+    SYSTEMS.forEach(s=>{
+      const cls = s.highlight ? "proposed-col" : "";
+      cells += `<td class="${cls}"><audio class="sm" controls preload="none" src="audio/baselines/${set}/${s.key}_${idx}.wav"></audio></td>`;
+    });
+    tr.innerHTML = cells;
+    body.appendChild(tr);
+  }
+}
+buildBaselineTable("clean");
+document.querySelectorAll(".testset-tabs button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".testset-tabs button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    buildBaselineTable(btn.dataset.set);
+  });
+});
+
+/* ----------  SECTION 2: source/filter components  ---------- */
+const COMPONENTS = [
+  {key:"src_pre",  tag:"Source &mdash; pre-CFM", cls:""},
+  {key:"src_post", tag:"Source &mdash; post-CFM", cls:""},
+  {key:"filter",   tag:"Filter (vocal tract)", cls:""},
+  {key:"combined", tag:"Combined &mdash; final", cls:"final"},
+];
+(function buildComponents(){
+  const grid = document.getElementById("components-grid");
+  for(let i=1;i<=N_COMPONENT;i++){
+    const idx = pad(i);
+    const txt = (TRANSCRIPTS.components[i-1] || "");
+    const card = document.createElement("div");
+    card.className = "card";
+    let inner = `<div class="utt-label">Utterance ${idx}</div>`;
+    if(txt) inner += `<div class="utt-text">${txt}</div>`;
+    inner += `<div class="components">`;
+    COMPONENTS.forEach(c=>{
+      inner += `
+        <div class="comp ${c.cls}">
+          <span class="tag">${c.tag}</span>
+          <img class="spec placeholder" data-src="spectrograms/${c.key}_${idx}.png"
+               alt="${c.tag} spectrogram" onerror="this.classList.add('placeholder');this.textContent='';"
+               onload="this.classList.remove('placeholder');">
+          <audio controls preload="none" src="audio/components/${c.key}_${idx}.wav"></audio>
+        </div>`;
+    });
+    inner += `</div>`;
+    card.innerHTML = inner;
+    grid.appendChild(card);
+  }
+  // swap data-src into src so placeholders show text until image loads
+  grid.querySelectorAll("img.spec").forEach(img=>{
+    img.textContent = "spectrogram";
+    img.src = img.dataset.src;
+  });
+})();
+
+/* ----------  SECTION 3: cross-speaker  ---------- */
+const COMBOS = [
+  {key:"AA", label:"A &rarr; A", routing:'<span class="src">source A</span> &middot; <span class="flt">filter A</span> <b>(reference)</b>'},
+  {key:"AB", label:"A &rarr; B", routing:'<span class="src">source A</span> &middot; <span class="flt">filter B</span> <b>(cross-speaker)</b>'},
+  {key:"BB", label:"B &rarr; B", routing:'<span class="src">source B</span> &middot; <span class="flt">filter B</span> <b>(reference)</b>'},
+];
+(function buildCross(){
+  const grid = document.getElementById("ab-grid");
+  for(let i=1;i<=N_CROSS;i++){
+    const idx = pad(i);
+    const txt = (TRANSCRIPTS.crossspeaker[i-1] || "");
+    const card = document.createElement("div");
+    card.className = "card";
+    let inner = `<div class="utt-label">Utterance ${idx}</div>`;
+    if(txt) inner += `<div class="utt-text">${txt}</div>`;
+    COMBOS.forEach(c=>{
+      inner += `
+        <div style="margin-bottom:14px;">
+          <div class="routing">${c.routing}</div>
+          <img class="spec placeholder" data-src="spectrograms/cs_${c.key}_${idx}.png"
+               alt="${c.label} spectrogram"
+               onerror="this.classList.add('placeholder');this.textContent='';"
+               onload="this.classList.remove('placeholder');">
+          <audio controls preload="none" src="audio/crossspeaker/${c.key}_${idx}.wav"></audio>
+        </div>`;
+    });
+    card.innerHTML = inner;
+    grid.appendChild(card);
+  }
+  grid.querySelectorAll("img.spec").forEach(img=>{img.textContent="spectrogram";img.src=img.dataset.src;});
+})();
+</script>
+</body>
+</html>
