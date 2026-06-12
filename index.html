@@ -89,11 +89,12 @@
     font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);
     border-bottom:1px solid var(--line);white-space:nowrap;
   }
-  table.cmp th.utt{position:sticky;left:0;z-index:2;background:#f3f1ec;}
+  table.cmp th.utt{position:sticky;left:0;z-index:5;background:#f3f1ec;}
   table.cmp td.utt{
-    position:sticky;left:0;background:var(--panel);font-family:var(--mono);
+    position:sticky;left:0;z-index:3;background:var(--panel);font-family:var(--mono);
     font-size:12px;color:var(--ink-soft);white-space:normal;
     vertical-align:top;min-width:160px;max-width:230px;
+    box-shadow:1px 0 0 var(--line);
   }
   table.cmp tbody tr:hover td{background:#fcfaf6;}
   table.cmp tbody tr:hover td.utt{background:#f6f3ee;}
@@ -248,9 +249,9 @@
 <section id="sec-crossspeaker">
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">03</span><h2>Cross-Speaker Source / Filter Recombination</h2></div>
-    <p class="sec-desc">The <span style="color:var(--accent);font-weight:600;">source</span> (pitch, energy, temporal) is routed from Speaker&nbsp;A while the <span style="color:var(--accent-2);font-weight:600;">filter</span> (vocal-tract kinematics) is routed from Speaker&nbsp;B. Self-reconstructions (A&ndash;A, B&ndash;B) are included as references.</p>
+    <p class="sec-desc">The <span style="color:var(--accent);font-weight:600;">source</span> (pitch, energy, temporal) is routed from Speaker&nbsp;A while the <span style="color:var(--accent-2);font-weight:600;">filter</span> (vocal-tract kinematics) is routed from Speaker&nbsp;B. All clips are model-generated; the matched conditions (A&ndash;A, B&ndash;B), where source and filter share one speaker, serve as self-reconstruction baselines for the cross-speaker A&ndash;B routing.</p>
     <div class="ab-grid" id="ab-grid" style="margin-top:8px;"><!-- cards injected by JS --></div>
-    <p class="note" style="margin-top:14px;">Audio: <code>audio/crossspeaker/{combo}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/crossspeaker_{combo}_{NN}.png</code><br>where <code>{combo}</code> &isin; <code>AA</code>, <code>BB</code>, <code>AB</code></p>
+    <p class="note" style="margin-top:14px;">Audio: <code>audio/crossspeaker/{combo}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/cs_{combo}_{NN}.png</code><br>where <code>{combo}</code> &isin; <code>AA</code>, <code>BB</code>, <code>AB</code></p>
   </div>
 </section>
 
@@ -379,27 +380,27 @@ const TRANSCRIPTS = {
         "When the lights or motors in the circuit are turned on and a certain definite small portion of the current is diverted to flow through the meter from the positive plate to the negative plate the latter increases in weight by receiving a deposit of metallic zinc the positive plate meantime losing in weight by the metal thus carried away from it"
     ],
     crossspeaker: [
-        "She can scoop these things into three red bags and we will go meet her Wednesday at the train station",
-        "When a man looks for something beyond his reach his friends say he is looking for the pot of gold at the end of the rainbow",
-        "These take the shape of a long round arch with its path high above and its two ends apparently beyond the horizon",
-        "Some have accepted it as a miracle without physical explanation",
-        "Some have accepted it as a miracle without physical explanation",
-        "The difference in the rainbow depends considerably upon the size of the drops and the width of the colored band increases as the size of the drops increases",
-        "When the sunlight strikes raindrops in the air they act as a prism and form a rainbow",
-        "The rainbow is a division of white light into many beautiful colors",
-        "Others have tried to explain the phenomenon physically",
-        "When the sunlight strikes raindrops in the air they act as a prism and form a rainbow"
+        "She can scoop these things into three red bags and we will go meet her Wednesday at the train station \n",
+        "When a man looks for something beyond his reach his friends say he is looking for the pot of gold at the end of the rainbow \n",
+        "These take the shape of a long round arch with its path high above and its two ends apparently beyond the horizon \n",
+        "Some have accepted it as a miracle without physical explanation \n",
+        "Some have accepted it as a miracle without physical explanation \n",
+        "The difference in the rainbow depends considerably upon the size of the drops and the width of the colored band increases as the size of the drops increases\n",
+        "When the sunlight strikes raindrops in the air they act as a prism and form a rainbow \n",
+        "The rainbow is a division of white light into many beautiful colors \n",
+        "Others have tried to explain the phenomenon physically \n",
+        "When the sunlight strikes raindrops in the air they act as a prism and form a rainbow \n"
     ]
 };
 
 const SYSTEMS = [
-  {key:"MatchaTTS",      label:"Matcha-TTS"},
-  {key:"StyleTTS2",   label:"StyleTTS2"},
-  {key:"YourTTS",     label:"YourTTS"},
-  {key:"XTTS",        label:"XTTS"},
-  {key:"HierSpeech++",  label:"HierSpeech++"},
-  {key:"Source-Filter",label:"Source-Filter"},
-  {key:"Proposed",    label:"Proposed", highlight:true},
+  {key:"matcha",      label:"Matcha-TTS"},
+  {key:"styletts2",   label:"StyleTTS2"},
+  {key:"yourtts",     label:"YourTTS"},
+  {key:"xtts",        label:"XTTS"},
+  {key:"hierspeech",  label:"HierSpeech++"},
+  {key:"sourcefilter",label:"Source-Filter"},
+  {key:"proposed",    label:"Proposed", highlight:true},
 ];
 
 const pad = n => String(n).padStart(2,"0");
@@ -475,9 +476,9 @@ const COMPONENTS = [
 
 /* ----------  SECTION 3: cross-speaker  ---------- */
 const COMBOS = [
-  {key:"AA", label:"A &rarr; A", routing:'<span class="src">source A</span> &middot; <span class="flt">filter A</span> <b>(reference)</b>'},
+  {key:"AA", label:"A &rarr; A", routing:'<span class="src">source A</span> &middot; <span class="flt">filter A</span> <b>(matched, A)</b>'},
   {key:"AB", label:"A &rarr; B", routing:'<span class="src">source A</span> &middot; <span class="flt">filter B</span> <b>(cross-speaker)</b>'},
-  {key:"BB", label:"B &rarr; B", routing:'<span class="src">source B</span> &middot; <span class="flt">filter B</span> <b>(reference)</b>'},
+  {key:"BB", label:"B &rarr; B", routing:'<span class="src">source B</span> &middot; <span class="flt">filter B</span> <b>(matched, B)</b>'},
 ];
 (function buildCross(){
   const grid = document.getElementById("ab-grid");
@@ -492,7 +493,7 @@ const COMBOS = [
       inner += `
         <div style="margin-bottom:14px;">
           <div class="routing">${c.routing}</div>
-          <img class="spec placeholder" data-src="spectrograms/crossspeaker_${c.key}_${idx}.png"
+          <img class="spec placeholder" data-src="spectrograms/cs_${c.key}_${idx}.png"
                alt="${c.label} spectrogram"
                onerror="this.classList.add('placeholder');this.textContent='';"
                onload="this.classList.remove('placeholder');">
