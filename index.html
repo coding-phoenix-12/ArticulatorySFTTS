@@ -251,7 +251,7 @@
     <div class="sec-head"><span class="sec-num">03</span><h2>Cross-Speaker Source / Filter Recombination</h2></div>
     <p class="sec-desc">The <span style="color:var(--accent);font-weight:600;">source</span> (pitch, energy, temporal) is routed from Speaker&nbsp;A while the <span style="color:var(--accent-2);font-weight:600;">filter</span> (vocal-tract kinematics) is routed from Speaker&nbsp;B. All clips are model-generated; the matched conditions (A&ndash;A, B&ndash;B), where source and filter share one speaker, serve as self-reconstruction baselines for the cross-speaker A&ndash;B routing.</p>
     <div class="ab-grid" id="ab-grid" style="margin-top:8px;"><!-- cards injected by JS --></div>
-    <p class="note" style="margin-top:14px;">Audio: <code>audio/crossspeaker/{combo}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/cs_{combo}_{NN}.png</code><br>where <code>{combo}</code> &isin; <code>AA</code>, <code>BB</code>, <code>AB</code></p>
+    <p class="note" style="margin-top:14px;">Audio: <code>audio/crossspeaker/{combo}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/crossspeaker_{combo}_{NN}.png</code><br>where <code>{combo}</code> &isin; <code>AA</code>, <code>BB</code>, <code>AB</code></p>
   </div>
 </section>
 
@@ -493,7 +493,7 @@ const COMBOS = [
       inner += `
         <div style="margin-bottom:14px;">
           <div class="routing">${c.routing}</div>
-          <img class="spec placeholder" data-src="spectrograms/cs_${c.key}_${idx}.png"
+          <img class="spec placeholder" data-src="spectrograms/crossspeaker_${c.key}_${idx}.png"
                alt="${c.label} spectrogram"
                onerror="this.classList.add('placeholder');this.textContent='';"
                onload="this.classList.remove('placeholder');">
