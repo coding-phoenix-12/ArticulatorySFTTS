@@ -123,8 +123,8 @@
     text-transform:none;
   }
 
-  /* component 2x2 */
-  .components{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  /* component flow grid — handles 5 panels, wraps responsively */
+  .components{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;}
   .comp{border:1px solid var(--line-soft);border-radius:3px;padding:12px;background:#fff;}
   .comp .tag{
     font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;
@@ -148,10 +148,6 @@
   /* figure audios */
   .fig-block{margin-bottom:34px;}
   .fig-block:last-child{margin-bottom:0;}
-  .fig-block img.figref{
-    width:100%;max-width:620px;border:1px solid var(--line);border-radius:3px;
-    display:block;margin:0 0 16px;background:#fff;
-  }
   .fig-caption{font-size:13.5px;color:var(--ink-soft);max-width:74ch;margin:0 0 16px;}
   .pairrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
 
@@ -236,13 +232,13 @@
 <section id="sec-components">
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">02</span><h2>Source &amp; Filter Decomposition</h2></div>
-    <p class="sec-desc">Ten utterances from the proposed model, each shown as four signals with spectrograms: the source excitation before and after OT-CFM refinement, the articulation-conditioned filter, and the final combined output.</p>
+    <p class="sec-desc">Ten utterances from the proposed model, each shown as five signals with spectrograms: the source excitation before and after OT-CFM refinement, the articulation-conditioned filter, and the combined output both before and after refinement &mdash; isolating what the OT-CFM module contributes to the final audio.</p>
     <div class="legend">
       <span class="l-src">source stream</span>
       <span class="l-flt">filter stream</span>
     </div>
     <div class="grid" id="components-grid" style="margin-top:22px;"><!-- cards injected by JS --></div>
-    <p class="note" style="margin-top:14px;">Audio: <code>audio/components/{type}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/{type}_{NN}.png</code><br>where <code>{type}</code> &isin; <code>src_pre</code>, <code>src_post</code>, <code>filter</code>, <code>combined</code></p>
+    <p class="note" style="margin-top:14px;">Audio: <code>audio/components/{type}_{NN}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/{type}_{NN}.png</code><br>where <code>{type}</code> &isin; <code>src_pre</code>, <code>src_post</code>, <code>filter</code>, <code>combined_pre</code>, <code>combined_post</code></p>
   </div>
 </section>
 
@@ -269,36 +265,63 @@
     <!-- pat / cat -->
     <div class="fig-block">
       <h4 style="font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;">Minimal pair &mdash; &ldquo;pat&rdquo; vs &ldquo;cat&rdquo; &middot; Fig. 2</h4>
-      <img class="figref" src="figures/fig2_patcat.png" alt="Kinematic trajectories for pat and cat">
-      <p class="fig-caption">Lower-lip activity for the bilabial /p/ versus tongue-dorsum elevation for the velar /k/, with a shared /-&aelig;t/ rhyme.</p>
+      <p class="fig-caption">Lower-lip activity for the bilabial /p/ versus tongue-dorsum elevation for the velar /k/, with a shared /-&aelig;t/ rhyme. See Fig.&nbsp;2 in the paper for the kinematic trajectories.</p>
       <div class="pairrow">
-        <div class="card"><div class="utt-label">&ldquo;pat&rdquo;</div><audio controls src="audio/figures/pat.wav"></audio></div>
-        <div class="card"><div class="utt-label">&ldquo;cat&rdquo;</div><audio controls src="audio/figures/cat.wav"></audio></div>
+        <div class="card">
+          <div class="utt-label">&ldquo;pat&rdquo;</div>
+          <img class="spec placeholder" src="spectrograms/pat.png" alt="pat spectrogram"
+               onerror="this.classList.add('placeholder');this.textContent='spectrogram';"
+               onload="this.classList.remove('placeholder');">
+          <audio controls src="audio/figures/pat.wav"></audio>
+        </div>
+        <div class="card">
+          <div class="utt-label">&ldquo;cat&rdquo;</div>
+          <img class="spec placeholder" src="spectrograms/cat.png" alt="cat spectrogram"
+               onerror="this.classList.add('placeholder');this.textContent='spectrogram';"
+               onload="this.classList.remove('placeholder');">
+          <audio controls src="audio/figures/cat.wav"></audio>
+        </div>
       </div>
     </div>
 
     <!-- cart -->
     <div class="fig-block">
       <h4 style="font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;">American rhotic &mdash; &ldquo;cart&rdquo; &middot; Fig. 3</h4>
-      <img class="figref" src="figures/fig3_cart.png" alt="Acoustic and kinematic trajectories for cart">
-      <p class="fig-caption">F3 lowering toward F2 with the simultaneous retroflex tongue-tip elevation and retraction characteristic of the post-vocalic /r/.</p>
+      <p class="fig-caption">F3 lowering toward F2 with the simultaneous retroflex tongue-tip elevation and retraction characteristic of the post-vocalic /r/. See Fig.&nbsp;3 in the paper for the kinematic trajectories.</p>
       <div class="pairrow">
-        <div class="card"><div class="utt-label">&ldquo;cart&rdquo; &mdash; synthesised</div><audio controls src="audio/figures/cart.wav"></audio></div>
+        <div class="card">
+          <div class="utt-label">&ldquo;cart&rdquo; &mdash; synthesised</div>
+          <img class="spec placeholder" src="spectrograms/cart.png" alt="cart spectrogram"
+               onerror="this.classList.add('placeholder');this.textContent='spectrogram';"
+               onload="this.classList.remove('placeholder');">
+          <audio controls src="audio/figures/cart.wav"></audio>
+        </div>
       </div>
     </div>
 
     <!-- bird -->
     <div class="fig-block">
       <h4 style="font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;">Accent edit &mdash; &ldquo;bird&rdquo; rhotic &rarr; non-rhotic &middot; Fig. 4</h4>
-      <img class="figref" src="figures/fig4_bird.png" alt="Kinematic and acoustic effect of flattening the rhotic gesture in bird">
-      <p class="fig-caption">Flattening the tongue-tip and tongue-body elevation suppresses the F3 drop, converting the rhotic American realisation into a non-rhotic one &mdash; with no acoustic post-processing.</p>
+      <p class="fig-caption">Flattening the tongue-tip and tongue-body elevation suppresses the F3 drop, converting the rhotic American realisation into a non-rhotic one &mdash; with no acoustic post-processing. See Fig.&nbsp;4 in the paper for the kinematic trajectories.</p>
       <div class="pairrow">
-        <div class="card"><div class="utt-label">Original &mdash; rhotic</div><audio controls src="audio/figures/bird_rhotic.wav"></audio></div>
-        <div class="card"><div class="utt-label">Modified &mdash; non-rhotic</div><audio controls src="audio/figures/bird_nonrhotic.wav"></audio></div>
+        <div class="card">
+          <div class="utt-label">Original &mdash; rhotic</div>
+          <img class="spec placeholder" src="spectrograms/bird_rhotic.png" alt="bird rhotic spectrogram"
+               onerror="this.classList.add('placeholder');this.textContent='spectrogram';"
+               onload="this.classList.remove('placeholder');">
+          <audio controls src="audio/figures/bird_rhotic.wav"></audio>
+        </div>
+        <div class="card">
+          <div class="utt-label">Modified &mdash; non-rhotic</div>
+          <img class="spec placeholder" src="spectrograms/bird_nonrhotic.png" alt="bird non-rhotic spectrogram"
+               onerror="this.classList.add('placeholder');this.textContent='spectrogram';"
+               onload="this.classList.remove('placeholder');">
+          <audio controls src="audio/figures/bird_nonrhotic.wav"></audio>
+        </div>
       </div>
     </div>
 
-    <p class="note">Audio: <code>audio/figures/{name}.wav</code> &nbsp;&middot;&nbsp; Figures: <code>figures/{figN}.png</code></p>
+    <p class="note">Audio: <code>audio/figures/{name}.wav</code> &nbsp;&middot;&nbsp; Spectrogram: <code>spectrograms/{name}.png</code><br>where <code>{name}</code> &isin; <code>pat</code>, <code>cat</code>, <code>cart</code>, <code>bird_rhotic</code>, <code>bird_nonrhotic</code></p>
   </div>
 </section>
 
@@ -320,45 +343,63 @@ const N_CROSS = 10;      // utterances in cross-speaker section
    Leave a string empty ("") to hide the transcript for that row.            */
 const TRANSCRIPTS = {
   clean: [
-    "The morning light fell across the quiet harbour.",  // clean_01
-    "She folded the letter and placed it on the table.",  // clean_02
-    "",  // clean_03
-    "",  // clean_04
-    "",  // clean_05
-    "",  // clean_06
-    "",  // clean_07
-    "",  // clean_08
-    "",  // clean_09
-    "",  // clean_10
-  ],
-  other: [
-    "",  // other_01
-    "",  // other_02
-    "",  // other_03
-    "",  // other_04
-    "",  // other_05
-    "",  // other_06
-    "",  // other_07
-    "",  // other_08
-    "",  // other_09
-    "",  // other_10
-  ],
-  components: [
-    "", "", "", "", "", "", "", "", "", ""   // utterance 01..10
-  ],
-  crossspeaker: [
-    "", "", "", "", "", "", "", "", "", ""   // utterance 01..10
-  ],
+        "Could anything be more natural",
+        "The description she gave of the coming reception to the Womans Political League was so humorous and diverting that they were both laughing heartily over the thing when the young people passed them and thus mr Hopkins failed to notice who the occupants of the other vehicle were",
+        "If we had retained the subject or act in knowledge the whole problem of memory would have been comparatively simple",
+        "No no I have heard that the French Indians had come into these hills to hunt the moose and we are getting within scent of their camp Why should they not",
+        "The lightning flashes with intense brilliancy and never seems to cease for a moment",
+        "Why should I rust and be stupid and sit in inaction because I am a girl What would happen to me if thee should lose thy property and die",
+        "The hawk followed his wing tips now almost brushing the water",
+        "Infirmities induced by over indulgence are among some peoples freely recognised as manly attributes",
+        "He was the last to turn to Christ",
+        "When the lights or motors in the circuit are turned on and a certain definite small portion of the current is diverted to flow through the meter from the positive plate to the negative plate the latter increases in weight by receiving a deposit of metallic zinc the positive plate meantime losing in weight by the metal thus carried away from it"
+    ],
+    other: [
+        "All the way pretty near said the man",
+        "At the culprits of riches with cold eyes and rank thoughts who pick up profit out of all kinds of rubbishat this rabble that stinketh to heaven",
+        "Are you going to work on that case Colonel",
+        "But it will take time",
+        "Here what made you dress up like that",
+        "tis the Ogre cried the Fairy",
+        "Dickie saw and the crown was set on his happiness",
+        "The captain coming in shortly after the sudden flight of the gamblers took charge of the money and the next day restored it to the owners",
+        "One of them was to the effect that the simplest division it is possible to make of the human race is into the people who take things hard and the people who take them easy",
+        "They had the vigor of a man in the prime of life and their presence in that puckered face of age which confronted Chris was horribly disconcerting"
+    ],
+    components: [
+        "Could anything be more natural",
+        "The description she gave of the coming reception to the Womans Political League was so humorous and diverting that they were both laughing heartily over the thing when the young people passed them and thus mr Hopkins failed to notice who the occupants of the other vehicle were",
+        "If we had retained the subject or act in knowledge the whole problem of memory would have been comparatively simple",
+        "No no I have heard that the French Indians had come into these hills to hunt the moose and we are getting within scent of their camp Why should they not",
+        "The lightning flashes with intense brilliancy and never seems to cease for a moment",
+        "Why should I rust and be stupid and sit in inaction because I am a girl What would happen to me if thee should lose thy property and die",
+        "The hawk followed his wing tips now almost brushing the water",
+        "Infirmities induced by over indulgence are among some peoples freely recognised as manly attributes",
+        "He was the last to turn to Christ",
+        "When the lights or motors in the circuit are turned on and a certain definite small portion of the current is diverted to flow through the meter from the positive plate to the negative plate the latter increases in weight by receiving a deposit of metallic zinc the positive plate meantime losing in weight by the metal thus carried away from it"
+    ],
+    crossspeaker: [
+        "She can scoop these things into three red bags and we will go meet her Wednesday at the train station",
+        "When a man looks for something beyond his reach his friends say he is looking for the pot of gold at the end of the rainbow",
+        "These take the shape of a long round arch with its path high above and its two ends apparently beyond the horizon",
+        "Some have accepted it as a miracle without physical explanation",
+        "Some have accepted it as a miracle without physical explanation",
+        "The difference in the rainbow depends considerably upon the size of the drops and the width of the colored band increases as the size of the drops increases",
+        "When the sunlight strikes raindrops in the air they act as a prism and form a rainbow",
+        "The rainbow is a division of white light into many beautiful colors",
+        "Others have tried to explain the phenomenon physically",
+        "When the sunlight strikes raindrops in the air they act as a prism and form a rainbow"
+    ]
 };
 
 const SYSTEMS = [
-  {key:"matcha",      label:"Matcha-TTS"},
-  {key:"styletts2",   label:"StyleTTS2"},
-  {key:"yourtts",     label:"YourTTS"},
-  {key:"xtts",        label:"XTTS"},
-  {key:"hierspeech",  label:"HierSpeech++"},
-  {key:"sourcefilter",label:"Source-Filter"},
-  {key:"proposed",    label:"Proposed", highlight:true},
+  {key:"MatchaTTS",      label:"Matcha-TTS"},
+  {key:"StyleTTS2",   label:"StyleTTS2"},
+  {key:"YourTTS",     label:"YourTTS"},
+  {key:"XTTS",        label:"XTTS"},
+  {key:"HierSpeech++",  label:"HierSpeech++"},
+  {key:"Source-Filter",label:"Source-Filter"},
+  {key:"Proposed",    label:"Proposed", highlight:true},
 ];
 
 const pad = n => String(n).padStart(2,"0");
@@ -395,10 +436,11 @@ document.querySelectorAll(".testset-tabs button").forEach(btn=>{
 
 /* ----------  SECTION 2: source/filter components  ---------- */
 const COMPONENTS = [
-  {key:"src_pre",  tag:"Source &mdash; pre-CFM", cls:""},
-  {key:"src_post", tag:"Source &mdash; post-CFM", cls:""},
-  {key:"filter",   tag:"Filter (vocal tract)", cls:""},
-  {key:"combined", tag:"Combined &mdash; final", cls:"final"},
+  {key:"src_pre",      tag:"Source &mdash; pre-CFM", cls:""},
+  {key:"src_post",     tag:"Source &mdash; post-CFM", cls:""},
+  {key:"filter",       tag:"Filter (vocal tract)", cls:""},
+  {key:"combined_pre", tag:"Combined &mdash; pre-CFM", cls:""},
+  {key:"combined_post",tag:"Combined &mdash; final (post-CFM)", cls:"final"},
 ];
 (function buildComponents(){
   const grid = document.getElementById("components-grid");
